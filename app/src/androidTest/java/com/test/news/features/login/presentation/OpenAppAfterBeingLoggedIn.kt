@@ -3,9 +3,12 @@ package com.test.news.features.login.presentation
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
@@ -23,14 +26,14 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class LoginActivityTestWrongUsernameAndPwd {
+class OpenAppAfterBeingLoggedIn {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(LoginActivity::class.java)
 
     @Test
-    fun loginActivityTest() {
+    fun loginActivityTestOpenAppAfterBeingLoggedIn() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editTextUserName),
@@ -43,7 +46,7 @@ class LoginActivityTestWrongUsernameAndPwd {
                 )
             )
         )
-        appCompatEditText.perform(scrollTo(), replaceText("user3"), closeSoftKeyboard())
+        appCompatEditText.perform(scrollTo(), replaceText("user1"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
             allOf(
@@ -57,7 +60,7 @@ class LoginActivityTestWrongUsernameAndPwd {
                 )
             )
         )
-        appCompatEditText2.perform(scrollTo(), replaceText("jhjhkljhklj"), closeSoftKeyboard())
+        appCompatEditText2.perform(scrollTo(), replaceText("password"), closeSoftKeyboard())
 
         val appCompatButton = onView(
             allOf(
@@ -73,6 +76,19 @@ class LoginActivityTestWrongUsernameAndPwd {
         )
         appCompatButton.perform(scrollTo(), click())
 
+        val recyclerView = onView(
+            allOf(
+                withId(R.id.recyclerViewImageWidget),
+                childAtPosition(
+                    withId(R.id.recyclerViewNews),
+                    0
+                )
+            )
+        )
+        recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+
+        pressBack()
+
         val button = onView(
             allOf(
                 withId(R.id.buttonLogin), withText("LOGIN"),
@@ -80,7 +96,7 @@ class LoginActivityTestWrongUsernameAndPwd {
                 isDisplayed()
             )
         )
-        button.check(matches(isDisplayed()))
+        button.check(doesNotExist())
     }
 
     private fun childAtPosition(

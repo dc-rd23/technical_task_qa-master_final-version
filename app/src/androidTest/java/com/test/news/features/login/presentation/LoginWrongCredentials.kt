@@ -3,11 +3,9 @@ package com.test.news.features.login.presentation
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
@@ -18,20 +16,21 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class externalPageImage1 {
+class LoginWrongCredentials {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(LoginActivity::class.java)
 
     @Test
-    fun externalPageImage1() {
+    fun loginActivityTest() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.editTextUserName),
@@ -44,23 +43,9 @@ class externalPageImage1 {
                 )
             )
         )
-        appCompatEditText.perform(scrollTo(), click())
+        appCompatEditText.perform(scrollTo(), replaceText("user3"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
-            allOf(
-                withId(R.id.editTextUserName),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.inputLayoutUserName),
-                        0
-                    ),
-                    0
-                )
-            )
-        )
-        appCompatEditText2.perform(scrollTo(), replaceText("user1"), closeSoftKeyboard())
-
-        val appCompatEditText3 = onView(
             allOf(
                 withId(R.id.editTextPassword),
                 childAtPosition(
@@ -72,7 +57,7 @@ class externalPageImage1 {
                 )
             )
         )
-        appCompatEditText3.perform(scrollTo(), replaceText("password"), closeSoftKeyboard())
+        appCompatEditText2.perform(scrollTo(), replaceText("jhjhkljhklj"), closeSoftKeyboard())
 
         val appCompatButton = onView(
             allOf(
@@ -88,42 +73,14 @@ class externalPageImage1 {
         )
         appCompatButton.perform(scrollTo(), click())
 
-        val recyclerView = onView(
+        val button = onView(
             allOf(
-                withId(R.id.recyclerViewImageWidget),
-                childAtPosition(
-                    withId(R.id.recyclerViewNews),
-                    0
-                )
+                withId(R.id.buttonLogin), withText("LOGIN"),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.ScrollView::class.java))),
+                isDisplayed()
             )
         )
-        val perform = recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-
-//        val editText = onView(
-//            allOf(
-//                withId(com.android.chrome.R.id.url_bar),
-//                withText("newsbtc.com/wp-content/uploads/2020/01/altcoin-crypto-bitcoin-disbelief-wall-street-shutterstock_360101591-1200x780.jpg"),
-//                withParent(
-//                    allOf(
-//                        withId(com.android.chrome.R.id.location_bar),
-//                        withParent(withId(com.android.chrome.R.id.toolbar))
-//                    )
-//                ),
-//                isDisplayed()
-//            )
-//        )
-//        editText.check(matches(withText("newsbtc.com/wp-content/uploads/2020/01/altcoin-crypto-bitcoin-disbelief-wall-street-shutterstock_360101591-1200x780.jpg")))
-
-        val recyclerView2 = onView(
-            allOf(
-                withId(R.id.recyclerViewImageWidget),
-                childAtPosition(
-                    withId(R.id.recyclerViewNews),
-                    0
-                )
-            )
-        )
-        recyclerView2.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+        button.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

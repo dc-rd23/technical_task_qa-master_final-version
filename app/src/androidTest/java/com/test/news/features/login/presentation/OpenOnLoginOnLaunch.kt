@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class LoginActivityTestOpenOnLoginOnLaunch {
+class OpenOnLoginOnLaunch {
 
     @Rule
     @JvmField
